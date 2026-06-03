@@ -1,52 +1,1571 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>목회자를 위한 노트북LM 마스터 가이드</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>목회자를 위한 노트북LM 마스터 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<style>
+/* ── CMDSPACE Design System v4.3 ─────────────────────────── */
+:root {
+  --cmds-green:       #134538;
+  --cmds-green-light: #1e6350;
+  --cmds-pink:        #E985A2;
+  --cmds-pink-dark:   #d4607e;
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  --bg:       #FAFAF8;
+  --bg-2:     #F2F0EB;
+  --bg-3:     #E8E5DE;
+  --ink:      #111111;
+  --ink-2:    #3A3A3A;
+  --ink-3:    #787878;
+  --border:   rgba(0,0,0,0.08);
+  --border-2: rgba(0,0,0,0.14);
 
-  <link rel="stylesheet" href="styles.css" />
+  --accent:       var(--cmds-green);
+  --accent-fg:    #FFFFFF;
+  --accent-soft:  rgba(19, 69, 56, 0.07);
+  --accent-soft2: rgba(19, 69, 56, 0.14);
+
+  --font-sans:    "Pretendard Variable", "Pretendard", -apple-system, "SF Pro Text", system-ui, sans-serif;
+  --font-display: "SF Pro Display", "Pretendard Variable", "Pretendard", sans-serif;
+  --font-mono:    "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+
+  --sidebar-w: 260px;
+  --content-max: 820px;
+  --radius: 10px;
+  --radius-lg: 16px;
+
+  --density-pad: 88px;
+  --section-gap: 120px;
+}
+[data-theme="dark"] {
+  --bg:       #111111;
+  --bg-2:     #1A1A1A;
+  --bg-3:     #242424;
+  --ink:      #F0EDE8;
+  --ink-2:    #B8B3AC;
+  --ink-3:    #6E6B66;
+  --border:   rgba(255,255,255,0.07);
+  --border-2: rgba(255,255,255,0.12);
+
+  --accent:      var(--cmds-pink);
+  --accent-fg:   #1B1B1B;
+  --accent-soft:  rgba(233, 133, 162, 0.10);
+  --accent-soft2: rgba(233, 133, 162, 0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s, color 0.2s;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ────────────────────────────────────────────── */
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── Sidebar ───────────────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  padding: 32px 0 40px;
+}
+
+.sidebar-brand {
+  padding: 0 24px 28px;
+  border-bottom: 1px solid var(--border);
+}
+.brand-seal {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 700;
+  color: var(--accent-fg);
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+.brand-title {
+  font-size: 13px; font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+}
+.brand-sub {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--ink-3);
+  margin-top: 3px;
+  letter-spacing: 0.08em;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 0;
+}
+.sidebar-nav a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 24px;
+  font-size: 13px; color: var(--ink-2);
+  transition: color 0.15s, background 0.15s;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+.sidebar-nav a:hover { color: var(--ink); background: var(--accent-soft); }
+.sidebar-nav a.active {
+  color: var(--accent);
+  font-weight: 600;
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+}
+.nav-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  min-width: 20px;
+}
+.sidebar-nav a.active .nav-num { color: var(--accent); opacity: 0.7; }
+
+.sidebar-foot {
+  padding: 20px 24px 0;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.7;
+}
+
+.theme-btn {
+  display: flex; align-items: center; gap: 8px;
+  margin: 16px 24px 0;
+  padding: 8px 14px;
+  border: 1px solid var(--border-2);
+  border-radius: 20px;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 12px; color: var(--ink-2);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Main Content ──────────────────────────────────────── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Hero ──────────────────────────────────────────────── */
+.hero {
+  padding: 96px var(--density-pad) 80px;
+  border-bottom: 1px solid var(--border);
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+  max-width: 680px;
+  margin-bottom: 24px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.hero-sub {
+  font-size: 17px;
+  color: var(--ink-2);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+.hero-chips {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 28px;
+}
+.chip {
+  display: inline-flex; align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border-2);
+  font-size: 12px; font-weight: 500;
+  color: var(--ink-2);
+  background: var(--bg-2);
+}
+.hero-meta {
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap;
+  font-size: 13px; color: var(--ink-3);
+}
+.hero-meta b { color: var(--ink-2); font-weight: 600; }
+.dot { opacity: 0.4; }
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: start;
+  max-width: var(--content-max);
+}
+.hero-card {
+  max-width: 300px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-top: 8px;
+}
+.quote-mark {
+  font-size: 48px;
+  line-height: 1;
+  color: var(--accent);
+  font-family: Georgia, serif;
+  margin-bottom: 8px;
+  opacity: 0.6;
+}
+.pull {
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+.attrib {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  letter-spacing: 0.05em;
+}
+
+/* ── Section ───────────────────────────────────────────── */
+.page-section {
+  padding: 96px var(--density-pad);
+  border-bottom: 1px solid var(--border);
+  max-width: calc(var(--content-max) + var(--density-pad) * 2);
+}
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 16px; height: 1px;
+  background: var(--accent);
+}
+.page-section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 20px;
+  max-width: 600px;
+}
+.lede {
+  font-size: 16px;
+  color: var(--ink-2);
+  max-width: 640px;
+  line-height: 1.8;
+  margin-bottom: 0;
+}
+
+/* ── Cards ─────────────────────────────────────────────── */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--accent); }
+.card .num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+}
+.card h3 {
+  font-size: 15px; font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+  line-height: 1.4;
+}
+.card p {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+
+/* ── Stat Strip ────────────────────────────────────────── */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 48px;
+}
+.stat {
+  padding: 28px 20px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.stat:last-child { border-right: none; }
+.stat .v {
+  font-family: var(--font-display);
+  font-size: 32px; font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat .unit {
+  font-size: 16px; font-weight: 500;
+}
+.stat .k {
+  font-size: 11px; color: var(--ink-3);
+  line-height: 1.4;
+}
+
+/* ── Principle List ────────────────────────────────────── */
+.principle-list {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 40px;
+}
+.principle {
+  display: flex; gap: 24px;
+  padding: 28px 28px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.principle:last-child { border-bottom: none; }
+.principle:hover { background: var(--accent-soft); }
+.marker {
+  font-family: var(--font-display);
+  font-size: 22px; font-weight: 800;
+  color: var(--accent);
+  min-width: 36px;
+  line-height: 1.2;
+  opacity: 0.7;
+}
+.principle h4 {
+  font-size: 15px; font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.principle p {
+  font-size: 13.5px;
+  color: var(--ink-2);
+  line-height: 1.75;
+}
+
+/* ── Caveat ────────────────────────────────────────────── */
+.caveat {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-soft2);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-top: 32px;
+}
+.caveat .label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+.caveat p {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.75;
+}
+
+/* ── Tabs ──────────────────────────────────────────────── */
+.tabs-shell {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 40px;
+}
+.tab-list {
+  border-right: 1px solid var(--border);
+  background: var(--bg-2);
+}
+.tab-btn {
+  display: flex; align-items: flex-start; gap: 12px;
+  width: 100%;
+  padding: 18px 20px;
+  border: none; border-bottom: 1px solid var(--border);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+}
+.tab-btn:last-child { border-bottom: none; }
+.tab-btn:hover { background: var(--bg-3); color: var(--ink); }
+.tab-btn.active {
+  background: var(--bg);
+  color: var(--ink);
+  border-right: 2px solid var(--accent);
+  margin-right: -1px;
+}
+.tab-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  min-width: 16px;
+  margin-top: 2px;
+}
+.tab-name { font-size: 13px; font-weight: 600; line-height: 1.3; }
+.tab-sub { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+.tab-body {
+  padding: 36px 36px;
+  display: none;
+}
+.tab-body.active { display: block; }
+.tab-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+}
+.tab-body h3 {
+  font-size: 20px; font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+.tab-body p { font-size: 14px; color: var(--ink-2); line-height: 1.8; margin-bottom: 14px; }
+.tab-body ul { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.tab-body li {
+  display: flex; gap: 10px;
+  font-size: 13px; color: var(--ink-2); line-height: 1.7;
+}
+.tab-body li::before {
+  content: "→";
+  color: var(--accent);
+  min-width: 14px;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.use-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-fg);
+  background: var(--accent);
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+  margin-right: 8px;
+}
+
+/* ── Timeline ──────────────────────────────────────────── */
+.timeline {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 32px;
+}
+.tl-item {
+  display: grid;
+  grid-template-columns: 56px 180px 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.tl-item:last-child { border-bottom: none; }
+.tl-num {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 24px; font-weight: 800;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-right: 1px solid var(--border);
+  opacity: 0.7;
+}
+.tl-title {
+  padding: 24px 20px;
+  border-right: 1px solid var(--border);
+  background: var(--bg-2);
+}
+.tl-title .meta {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-3);
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+.tl-title h3 {
+  font-size: 14px; font-weight: 700;
+  color: var(--ink);
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+}
+.tl-body {
+  padding: 24px 24px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  line-height: 1.75;
+}
+.tl-body code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--bg-3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--accent);
+}
+
+/* ── Use Case ──────────────────────────────────────────── */
+.usecase {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.usecase:hover { border-color: var(--accent); }
+.usecase-art {
+  height: 120px;
+  background: var(--accent-soft2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+.usecase-body { padding: 24px; }
+.usecase-body .role {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  margin-bottom: 8px;
+}
+.usecase-body h3 {
+  font-size: 17px; font-weight: 700;
+  letter-spacing: -0.4px;
+  margin-bottom: 10px;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.usecase-body > p {
+  font-size: 13px; color: var(--ink-2); line-height: 1.7; margin-bottom: 16px;
+}
+.usecase-steps {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.usecase-steps li {
+  display: flex; gap: 12px;
+  font-size: 13px; color: var(--ink-2); line-height: 1.65;
+}
+.usecase-steps li b {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  min-width: 22px;
+  margin-top: 2px;
+  font-weight: 700;
+}
+
+/* ── Prompts ───────────────────────────────────────────── */
+.prompt-filter {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 32px 0 28px;
+}
+.filter-btn {
+  height: 32px;
+  padding: 0 16px;
+  border: 1px solid var(--border-2);
+  border-radius: 16px;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 13px; color: var(--ink-2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
+.prompt-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.prompt-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  background: var(--bg-2);
+  transition: border-color 0.2s;
+}
+.prompt-card:hover { border-color: var(--accent); }
+.prompt-head {
+  margin-bottom: 8px;
+}
+.prompt-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.prompt-title {
+  font-size: 14px; font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+  letter-spacing: -0.3px;
+  line-height: 1.35;
+}
+.prompt-body {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.75;
+  padding: 12px 14px;
+  background: var(--bg-3);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  margin-bottom: 12px;
+  white-space: pre-wrap;
+}
+.prompt-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.prompt-note {
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  flex: 1;
+}
+.copy-btn {
+  flex-shrink: 0;
+  height: 28px; padding: 0 14px;
+  border: 1px solid var(--border-2);
+  border-radius: 14px;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 11px; font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+.copy-btn.copied {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
+
+/* ── FAQ ───────────────────────────────────────────────── */
+.faq {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 40px;
+}
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+.faq-item:last-child { border-bottom: none; }
+.faq-q {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  width: 100%;
+  padding: 22px 28px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 15px; font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s;
+  line-height: 1.45;
+}
+.faq-q:hover { background: var(--accent-soft); }
+.faq-icon {
+  font-size: 18px;
+  color: var(--ink-3);
+  transition: transform 0.2s;
+  min-width: 18px;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
+.faq-a {
+  display: none;
+  padding: 0 28px 24px;
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.8;
+  border-top: 1px solid var(--border);
+  background: var(--accent-soft);
+}
+.faq-item.open .faq-a { display: block; padding-top: 20px; }
+
+/* ── Footer ────────────────────────────────────────────── */
+footer {
+  padding: 64px var(--density-pad) 80px;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+footer h4 {
+  font-size: 13px; font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 16px;
+  letter-spacing: -0.2px;
+}
+.foot-blessing {
+  font-size: 17px;
+  color: var(--ink-2);
+  line-height: 1.8;
+  font-style: italic;
+}
+footer ul {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 8px;
+}
+footer li { font-size: 13px; }
+footer li a { color: var(--ink-2); }
+footer li a:hover { color: var(--accent); }
+.foot-bottom {
+  grid-column: 1 / -1;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--ink-3);
+  font-family: var(--font-mono);
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  :root { --sidebar-w: 220px; --density-pad: 48px; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .stat-strip { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(2) { border-right: none; }
+  .tabs-shell { grid-template-columns: 1fr; }
+  .tab-list { display: flex; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  .tab-btn { border-right: 1px solid var(--border); border-bottom: none; min-width: 140px; }
+  .tab-btn.active { border-right-color: var(--border); border-bottom: 2px solid var(--accent); margin-right: 0; margin-bottom: -1px; }
+  .tl-item { grid-template-columns: 44px 1fr; }
+  .tl-title { border-right: none; border-bottom: 1px solid var(--border); grid-column: 2; }
+  .tl-body { grid-column: 2; }
+  footer { grid-template-columns: 1fr 1fr; }
+  footer > div:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 768px) {
+  :root { --sidebar-w: 0px; --density-pad: 24px; }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); box-shadow: 0 0 40px rgba(0,0,0,0.15); }
+  .main { margin-left: 0; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-card { max-width: 100%; }
+  .grid-3, .grid-2, .grid-4 { grid-template-columns: 1fr; }
+  .stat-strip { grid-template-columns: repeat(2, 1fr); }
+  .prompt-grid { grid-template-columns: 1fr; }
+  .tl-item { grid-template-columns: 44px 1fr; }
+  footer { grid-template-columns: 1fr; gap: 32px; }
+  .foot-bottom { flex-direction: column; gap: 8px; }
+  .mobile-menu-btn { display: flex; }
+}
+
+.mobile-menu-btn {
+  display: none;
+  position: fixed; top: 16px; left: 16px;
+  z-index: 200;
+  width: 40px; height: 40px;
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  background: var(--bg);
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--ink);
+}
+</style>
 </head>
 <body>
-  <template id="__bundler_thumbnail" data-bg-color="#f1ece0">
-    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-      <rect width="1200" height="800" fill="#f1ece0"/>
-      <g transform="translate(600 400)">
-        <circle r="160" fill="#1d2540"/>
-        <text x="0" y="14" text-anchor="middle"
-              font-family="Georgia, serif" font-size="120" font-weight="600"
-              fill="#faf6ec" letter-spacing="-6">N</text>
-        <circle r="220" fill="none" stroke="#a47038" stroke-width="2" opacity="0.6"/>
-        <circle r="280" fill="none" stroke="#a47038" stroke-width="1" opacity="0.3"/>
-      </g>
-      <text x="600" y="720" text-anchor="middle"
-            font-family="Georgia, serif" font-size="28"
-            fill="#3a4258" font-style="italic">목회자를 위한 노트북LM 마스터 가이드</text>
-    </svg>
-  </template>
 
-  <div id="root"></div>
+<button class="mobile-menu-btn" id="menuBtn" aria-label="메뉴 열기">☰</button>
 
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<div class="shell">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-seal">N</div>
+      <div class="brand-title">노트북LM 가이드</div>
+      <div class="brand-sub">PASTORAL · MASTER GUIDE</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="#intro" class="active"><span class="nav-num">01</span><span>노트북LM이란</span></a>
+      <a href="#why"><span class="nav-num">02</span><span>왜 노트북LM인가</span></a>
+      <a href="#studio"><span class="nav-num">03</span><span>스튜디오</span></a>
+      <a href="#banana"><span class="nav-num">04</span><span>BananaNL</span></a>
+      <a href="#workflow"><span class="nav-num">05</span><span>사역별 워크플로</span></a>
+      <a href="#prompts"><span class="nav-num">06</span><span>프롬프트 12선</span></a>
+      <a href="#tips"><span class="nav-num">07</span><span>핵심 포인트</span></a>
+      <a href="#faq"><span class="nav-num">08</span><span>자주 묻는 질문</span></a>
+    </nav>
+    <div class="sidebar-foot">
+      한 영혼을 더 가까이 보기 위함입니다.<br />
+      도구가 사람을 가리지 않도록.
+    </div>
+    <button class="theme-btn" id="themeBtn">
+      <span id="themeIcon">◐</span>
+      <span id="themeLabel">다크 모드</span>
+    </button>
+  </aside>
 
-  <script>
-    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-      "theme": "manuscript",
-      "density": "cozy",
-      "serifBody": false
-    }/*EDITMODE-END*/;
-    window.TWEAK_DEFAULTS = TWEAK_DEFAULTS;
-  </script>
+  <!-- Main -->
+  <main class="main">
 
-  <script src="data.js"></script>
-  <script type="text/babel" src="tweaks-panel.jsx"></script>
-  <script type="text/babel" src="app.jsx"></script>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-eyebrow">PASTORAL MASTER GUIDE · NOTEBOOKLM</div>
+          <h1>목회자를 위한<br /><em>노트북LM</em> 마스터 가이드</h1>
+          <p class="hero-sub">
+            구글이 만든 '나만의 문서만을 위한 맞춤형 AI 비서'를,<br />
+            설교·연구·교육·행정의 한 자리에서 책임 있게 활용하는 방법.
+          </p>
+          <div class="hero-chips">
+            <span class="chip">8개 섹션</span>
+            <span class="chip">12 프롬프트</span>
+            <span class="chip">사역별 워크플로</span>
+            <span class="chip">한국어 가이드</span>
+          </div>
+          <div class="hero-meta">
+            <span><b>읽는 시간</b> 약 25분</span>
+            <span class="dot">·</span>
+            <span><b>대상</b> 담임 · 부교역자 · 사역팀</span>
+            <span class="dot">·</span>
+            <span><b>도구</b> NotebookLM (Google)</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="quote-mark">"</div>
+          <div class="pull">
+            자료를 찾는 시간은 노트북LM에게 맡기고, 목회자 본연의 사명인
+            '기도와 말씀 묵상, 그리고 성도를 돌보는 시간'에 더 집중하실 수 있습니다.
+          </div>
+          <div class="attrib">— 본 가이드의 결론, 미리 적어둠</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 노트북LM이란 -->
+    <section id="intro" class="page-section">
+      <div class="section-eyebrow">01 · INTRO</div>
+      <h2>인터넷 전체가 아니라,<br />목회자가 올린 자료만 읽는 AI.</h2>
+      <p class="lede">
+        일반적인 ChatGPT나 Claude가 인터넷의 광범위한 지식을 바탕으로 답하는 '일반 비서'라면,
+        노트북LM은 목회자가 직접 올린 자료만 읽고, 그 안에서만 응답하는
+        '전속 연구원'에 가깝습니다.
+      </p>
+
+      <div class="grid-3" style="margin-top:36px">
+        <article class="card">
+          <div class="num">WHY · 01</div>
+          <h3>출처가 있는 AI</h3>
+          <p>답변마다 어느 문서의 몇 페이지에서 나온 정보인지 핀을 달아 알려줍니다. 강대상에서 쓸 내용의 신뢰도를 직접 확인하실 수 있습니다.</p>
+        </article>
+        <article class="card">
+          <div class="num">WHY · 02</div>
+          <h3>나만의 자료만</h3>
+          <p>노트북LM은 목회자가 업로드한 자료 바깥의 내용을 무단으로 인용하지 않습니다. 설교 원고, 신학 서적, 교회 문서가 섞이지 않습니다.</p>
+        </article>
+        <article class="card">
+          <div class="num">WHY · 03</div>
+          <h3>프롬프트 없이도</h3>
+          <p>스튜디오 기능을 통해 업로드한 자료를 클릭 한 번으로 오디오 요약, 학습 가이드, 마인드맵, 슬라이드로 변환합니다. 명령어를 몰라도 됩니다.</p>
+        </article>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat">
+          <div class="v">2,500<span class="unit">만 자</span></div>
+          <div class="k">노트북 1개당 메모리</div>
+        </div>
+        <div class="stat">
+          <div class="v">≈ 50<span class="unit">권</span></div>
+          <div class="k">책 분량으로 환산</div>
+        </div>
+        <div class="stat">
+          <div class="v">5<span class="unit">종</span></div>
+          <div class="k">지원 파일 (PDF·DOC·TXT·URL·YT)</div>
+        </div>
+        <div class="stat">
+          <div class="v">0<span class="unit">원</span></div>
+          <div class="k">기본 활용은 무료</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 왜 노트북LM인가 -->
+    <section id="why" class="page-section">
+      <div class="section-eyebrow">02 · WHY</div>
+      <h2>목회자에게 필요한<br />다섯 가지 약속.</h2>
+      <p class="lede">
+        강대상에 오를 글을 다루는 사람에게 가장 중요한 것은 '속도'가 아니라
+        '출처가 분명한 답'과 '민감한 자료를 안전하게 다룰 기반'입니다.
+        노트북LM이 다른 AI와 갈라지는 다섯 지점.
+      </p>
+
+      <div class="principle-list">
+        <div class="principle">
+          <div class="marker">01</div>
+          <div>
+            <h4>출처 고정 · Source Grounding</h4>
+            <p>모든 답변에 출처 핀이 붙습니다. 어느 문서의 어느 문장에서 답이 나왔는지 클릭 한 번으로 확인됩니다. 설교 준비 시 인용의 신뢰도를 스스로 검증하실 수 있습니다.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="marker">02</div>
+          <div>
+            <h4>데이터 격리 · Data Isolation</h4>
+            <p>목회자가 올린 자료는 해당 노트북 안에서만 읽힙니다. 교회 성도 상담 자료나 재정 문서를 다른 사용자의 AI가 학습하거나 참조하지 않습니다.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="marker">03</div>
+          <div>
+            <h4>멀티 포맷 · Multi-Format Input</h4>
+            <p>PDF, Word, 텍스트 파일 외에 YouTube 영상 URL, 웹페이지 URL도 소스로 등록됩니다. 강의 영상, 신학 저널, 교단 자료를 한곳에 모을 수 있습니다.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="marker">04</div>
+          <div>
+            <h4>스튜디오 자동화 · Studio Automation</h4>
+            <p>업로드한 자료를 '오디오 요약', '학습 가이드', '마인드맵', '발표 슬라이드'로 자동 변환합니다. 반복 정리 작업의 시간을 대폭 줄여줍니다.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="marker">05</div>
+          <div>
+            <h4>무료 시작 · Free Tier</h4>
+            <p>기본 기능은 Google 계정만 있으면 무료로 시작됩니다. 구독 결정 전에 실제 사역 자료로 검증하실 수 있습니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="caveat">
+        <div class="label">CAVEAT · 주의사항</div>
+        <p>
+          '할루시네이션 제로'라는 표현은 마케팅에 가깝습니다.
+          실제로는 '훨씬 적다'가 정직한 표현이며, 출처 핀이 붙은 문장만 신뢰하시고,
+          핀이 없거나 모호한 답은 원문 확인 전에는 인용하지 마세요.
+        </p>
+      </div>
+    </section>
+
+    <!-- 03 스튜디오 -->
+    <section id="studio" class="page-section">
+      <div class="section-eyebrow">03 · STUDIO</div>
+      <h2>한 편의 글을<br />다섯 가지 형식으로 변환한다.</h2>
+      <p class="lede">
+        우측 패널의 '스튜디오(Studio)'는 업로드한 자료를 클릭 한 번에 오디오 대담,
+        영상 브리핑, 학습 가이드, 마인드맵, 발표 슬라이드, FAQ로 자동 변환합니다.
+        프롬프트를 외우지 못해도 됩니다.
+      </p>
+
+      <div class="tabs-shell">
+        <div class="tab-list" id="studioTabs">
+          <button class="tab-btn active" data-tab="audio">
+            <span class="tab-num">A</span>
+            <div>
+              <div class="tab-name">오디오 개요</div>
+              <div class="tab-sub">이동 중 청취용</div>
+            </div>
+          </button>
+          <button class="tab-btn" data-tab="guide">
+            <span class="tab-num">B</span>
+            <div>
+              <div class="tab-name">학습 가이드</div>
+              <div class="tab-sub">구조화된 요약</div>
+            </div>
+          </button>
+          <button class="tab-btn" data-tab="mindmap">
+            <span class="tab-num">C</span>
+            <div>
+              <div class="tab-name">마인드맵</div>
+              <div class="tab-sub">개념 시각화</div>
+            </div>
+          </button>
+          <button class="tab-btn" data-tab="slides">
+            <span class="tab-num">D</span>
+            <div>
+              <div class="tab-name">발표 슬라이드</div>
+              <div class="tab-sub">공유 가능 덱</div>
+            </div>
+          </button>
+          <button class="tab-btn" data-tab="faqout">
+            <span class="tab-num">E</span>
+            <div>
+              <div class="tab-name">FAQ 자동 생성</div>
+              <div class="tab-sub">질의응답 세트</div>
+            </div>
+          </button>
+        </div>
+        <div>
+          <div class="tab-body active" id="tab-audio">
+            <div class="tab-eyebrow">AUDIO OVERVIEW</div>
+            <h3>오디오 개요 — 이동 중 청취용 요약</h3>
+            <p>업로드한 자료 전체를 두 진행자가 대화하는 팟캐스트 형식의 MP3로 만들어줍니다. 운전 중, 산책 중에 들을 수 있는 10~15분 분량으로 압축됩니다.</p>
+            <p><span class="use-tag">USE</span> 설교 연구 자료를 한 번에 파악하고 싶을 때 첫 번째로 실행하기에 적합합니다.</p>
+            <ul>
+              <li>한국어 설정 시 한국어로 생성됩니다</li>
+              <li>진행자 어조·깊이를 프롬프트로 커스터마이즈 가능</li>
+              <li>완성된 오디오는 팀과 공유 가능</li>
+            </ul>
+          </div>
+          <div class="tab-body" id="tab-guide">
+            <div class="tab-eyebrow">STUDY GUIDE</div>
+            <h3>학습 가이드 — 구조화된 요약문서</h3>
+            <p>자료의 핵심 개념을 섹션별로 정리하고, 각 섹션마다 확인 질문과 심화 탐구 방향을 제안합니다. 성경 공부 교재나 소그룹 준비에 바로 활용 가능한 형식입니다.</p>
+            <p><span class="use-tag">USE</span> 교육 자료나 소그룹 커리큘럼 제작 시 초안으로 활용하세요.</p>
+            <ul>
+              <li>섹션별 핵심 포인트 + 확인 질문 자동 생성</li>
+              <li>Markdown 형식으로 복사·편집 가능</li>
+              <li>소그룹 공과로 바로 활용 가능</li>
+            </ul>
+          </div>
+          <div class="tab-body" id="tab-mindmap">
+            <div class="tab-eyebrow">MIND MAP</div>
+            <h3>마인드맵 — 개념 관계 시각화</h3>
+            <p>자료 내의 개념들이 어떻게 연결되어 있는지 인터랙티브한 마인드맵으로 보여줍니다. 설교의 흐름을 설계하거나 신학 개념의 관계를 파악하는 데 유용합니다.</p>
+            <p><span class="use-tag">USE</span> 설교 구조 설계 초기, 또는 신학 주제 연구의 전체 지도를 그릴 때 실행하세요.</p>
+            <ul>
+              <li>노드 클릭 시 해당 원문 구절로 이동</li>
+              <li>PNG/SVG로 내보내기 가능</li>
+              <li>PPT 슬라이드에 삽입 용이</li>
+            </ul>
+          </div>
+          <div class="tab-body" id="tab-slides">
+            <div class="tab-eyebrow">PRESENTATION SLIDES</div>
+            <h3>발표 슬라이드 — Google Slides 자동 생성</h3>
+            <p>자료 핵심을 Google Slides 형식의 발표 덱으로 만들어줍니다. 제목, 소제목, 핵심 포인트가 자동 배치됩니다. BananaNL 확장과 함께 쓰면 디자인까지 한 번에 처리됩니다.</p>
+            <p><span class="use-tag">USE</span> 사역팀 교육, 교인 세미나, 당회 보고 자료 등에 활용하세요.</p>
+            <ul>
+              <li>Google Drive에 바로 저장</li>
+              <li>슬라이드 수·깊이 조절 가능</li>
+              <li>BananaNL로 디자인 보강 권장</li>
+            </ul>
+          </div>
+          <div class="tab-body" id="tab-faqout">
+            <div class="tab-eyebrow">FAQ GENERATION</div>
+            <h3>FAQ 자동 생성 — 질의응답 세트</h3>
+            <p>자료를 읽은 독자가 가장 많이 물을 법한 질문 목록을 자동으로 생성하고, 자료 기반으로 답변까지 달아줍니다. 설교 후 Q&A 준비나 교육 자료 검증에 활용할 수 있습니다.</p>
+            <p><span class="use-tag">USE</span> 세미나·강의 전에 예상 질문을 준비하거나, 소그룹 토론 질문지를 만들 때 활용하세요.</p>
+            <ul>
+              <li>질문 수 조절 가능 (5–20개)</li>
+              <li>각 답변에 출처 핀 포함</li>
+              <li>텍스트로 복사해 문서에 삽입 가능</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card" style="margin-top:32px; max-width:100%">
+        <div class="quote-mark">"</div>
+        <div class="pull">스튜디오는 '프롬프트 없는 AI'입니다. 버튼 하나로 자료가 팟캐스트가 되고 슬라이드가 됩니다. 목회자에게 필요한 것은 AI 명령어가 아니라, 이 버튼의 존재를 아는 것입니다.</div>
+        <div class="attrib">— 스튜디오 기능 한 줄 정리</div>
+      </div>
+    </section>
+
+    <!-- 04 BananaNL -->
+    <section id="banana" class="page-section">
+      <div class="section-eyebrow">04 · BANANÄNL</div>
+      <h2>노트북LM의 약점,<br />'단조로운 슬라이드'를 보강하는 한 가지.</h2>
+      <p class="lede">
+        노트북LM이 만드는 슬라이드는 내용은 훌륭하지만 디자인이 단조롭습니다.
+        BananaNL은 Chrome 확장 프로그램으로, 생성된 슬라이드를 클릭 한 번으로
+        세련된 디자인으로 변환해줍니다.
+      </p>
+
+      <h3 style="margin-top:48px; margin-bottom:16px; font-size:17px; font-weight:700; letter-spacing:-0.3px;">설치 방법 (약 35초)</h3>
+      <div class="grid-4">
+        <article class="card">
+          <div class="num">STEP 01 · 2초</div>
+          <h3>Chrome 웹 스토어 열기</h3>
+          <p>Chrome 브라우저에서 Chrome 웹 스토어(chromewebstore.google.com)로 이동합니다.</p>
+        </article>
+        <article class="card">
+          <div class="num">STEP 02 · 5초</div>
+          <h3>"BananaNL" 검색</h3>
+          <p>검색창에 "BananaNL"을 입력하고 엔터. 첫 번째 결과를 클릭합니다.</p>
+        </article>
+        <article class="card">
+          <div class="num">STEP 03 · 8초</div>
+          <h3>Chrome에 추가</h3>
+          <p>"Chrome에 추가" 버튼 클릭 → 권한 확인 대화상자에서 "확장 프로그램 추가" 클릭.</p>
+        </article>
+        <article class="card">
+          <div class="num">STEP 04 · 20초</div>
+          <h3>설치 완료 확인</h3>
+          <p>주소창 오른쪽 퍼즐 아이콘 클릭 → BananaNL이 보이면 완료. 고정핀 눌러 항상 표시 권장.</p>
+        </article>
+      </div>
+
+      <h3 style="margin-top:48px; margin-bottom:16px; font-size:17px; font-weight:700; letter-spacing:-0.3px;">슬라이드 제작 워크플로</h3>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-num">1</div>
+          <div class="tl-title"><div class="meta">IN NOTEBOOKLM</div><h3>자료 업로드 & 스튜디오 열기</h3></div>
+          <div class="tl-body">노트북에 설교·연구 자료를 업로드한 뒤, 우측 '스튜디오' 패널에서 <code>발표 슬라이드</code>를 클릭합니다. 슬라이드 생성이 시작됩니다.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-num">2</div>
+          <div class="tl-title"><div class="meta">CUSTOMIZE</div><h3>슬라이드 수·구조 조정</h3></div>
+          <div class="tl-body">생성 전 '맞춤 설정'에서 슬라이드 수(10–20장), 청중 유형(교인·사역팀·외부 청중), 어조(격식체·대화체)를 지정하면 더 정교한 결과를 얻습니다.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-num">3</div>
+          <div class="tl-title"><div class="meta">IN GOOGLE SLIDES</div><h3>Google Slides에서 열기</h3></div>
+          <div class="tl-body">생성된 슬라이드가 Google Drive에 저장됩니다. 링크를 클릭해 Google Slides로 엽니다. 이때 Chrome에 BananaNL이 설치되어 있어야 합니다.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-num">4</div>
+          <div class="tl-title"><div class="meta">DESIGN</div><h3>BananaNL 테마 적용</h3></div>
+          <div class="tl-body">슬라이드 우측 상단에 BananaNL 아이콘이 나타납니다. 클릭 → 원하는 테마 선택 → <code>적용</code>. 1–3초 내에 전체 슬라이드 디자인이 바뀝니다.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-num">5</div>
+          <div class="tl-title"><div class="meta">EXPORT</div><h3>PDF·PPTX로 내보내기</h3></div>
+          <div class="tl-body">파일 → 다운로드 → <code>Microsoft PowerPoint(.pptx)</code> 또는 <code>PDF 문서</code>를 선택해 내보냅니다. 교회 빔 프로젝터용은 PPTX, 이메일 배포용은 PDF 권장.</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:24px">
+        <div class="caveat" style="margin-top:0">
+          <div class="label">TIP · 폰트 설정</div>
+          <p>BananaNL 테마 적용 후 한국어 폰트가 깨질 수 있습니다. Google Slides에서 전체 선택(Ctrl+A) 후 '나눔고딕' 또는 '본고딕'으로 변경하세요.</p>
+        </div>
+        <div class="caveat" style="margin-top:0">
+          <div class="label">TIP · 저작권 주의</div>
+          <p>BananaNL이 적용한 이미지는 저작권이 있을 수 있습니다. 교회 외부 배포 자료에는 직접 확보한 이미지로 교체하거나 이미지를 제거하고 사용하세요.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 사역별 워크플로 -->
+    <section id="workflow" class="page-section">
+      <div class="section-eyebrow">05 · WORKFLOW</div>
+      <h2>설교 · 연구 · 교육 · 행정,<br />네 가지 결의 일.</h2>
+      <p class="lede">
+        목회자분들에게 노트북LM은 '지치지 않는 수석 연구원'이자
+        '가장 든든한 사역 비서'가 될 수 있습니다.
+        각 사역에 맞춘 활용의 결을 정리합니다.
+      </p>
+
+      <div class="grid-2" style="margin-top:36px">
+        <article class="usecase">
+          <div class="usecase-art">설교 연구</div>
+          <div class="usecase-body">
+            <div class="role">01 · PREACHING</div>
+            <h3>설교 준비를 위한 노트북LM</h3>
+            <p>본문 주석, 설교 자료, 신학 서적을 하나의 노트북에 모으고 통합적으로 연구합니다.</p>
+            <ul class="usecase-steps">
+              <li><b>01</b><span><strong>자료 수집</strong> — 본문 주석 PDF, 참고 설교 음성파일 URL, 신학 논문을 업로드</span></li>
+              <li><b>02</b><span><strong>통합 질문</strong> — "이 자료들에서 본문의 핵심 신학적 주제를 정리해줘"</span></li>
+              <li><b>03</b><span><strong>반박 요청</strong> — "내가 생각하는 설교 방향의 신학적 약점을 지적해줘"</span></li>
+              <li><b>04</b><span><strong>청중화</strong> — "이 내용을 40대 직장인 교인에게 맞게 쉽게 풀어줘"</span></li>
+            </ul>
+          </div>
+        </article>
+        <article class="usecase">
+          <div class="usecase-art">신학 연구</div>
+          <div class="usecase-body">
+            <div class="role">02 · RESEARCH</div>
+            <h3>신학 연구를 위한 노트북LM</h3>
+            <p>논문 작성, 주제 연구, 문헌 비교를 AI 연구원과 함께 체계적으로 진행합니다.</p>
+            <ul class="usecase-steps">
+              <li><b>01</b><span><strong>문헌 수집</strong> — 연구 주제 관련 논문·단행본 PDF를 하나의 노트북에</span></li>
+              <li><b>02</b><span><strong>비교 분석</strong> — "각 저자의 입장 차이를 표로 정리해줘"</span></li>
+              <li><b>03</b><span><strong>논점 발굴</strong> — "이 문헌들에서 아직 논의되지 않은 쟁점은 무엇인가?"</span></li>
+              <li><b>04</b><span><strong>참고문헌</strong> — "인용한 출처를 APA 형식으로 정리해줘"</span></li>
+            </ul>
+          </div>
+        </article>
+        <article class="usecase">
+          <div class="usecase-art">교육·소그룹</div>
+          <div class="usecase-body">
+            <div class="role">03 · EDUCATION</div>
+            <h3>교육과 소그룹을 위한 노트북LM</h3>
+            <p>성경 공부, 제자훈련, 소그룹 커리큘럼을 자료 기반으로 정확하고 빠르게 만듭니다.</p>
+            <ul class="usecase-steps">
+              <li><b>01</b><span><strong>커리큘럼 노트북</strong> — 제자훈련 교재, 참고 서적을 통합 업로드</span></li>
+              <li><b>02</b><span><strong>공과 생성</strong> — "8주 커리큘럼의 3주차 소그룹 공과를 만들어줘"</span></li>
+              <li><b>03</b><span><strong>토론 질문</strong> — "이 내용으로 30분 토론이 가능한 질문 5개를 만들어줘"</span></li>
+              <li><b>04</b><span><strong>레벨 조정</strong> — "신앙 초년생도 이해할 수 있게 난이도를 낮춰줘"</span></li>
+            </ul>
+          </div>
+        </article>
+        <article class="usecase">
+          <div class="usecase-art">교회 행정</div>
+          <div class="usecase-body">
+            <div class="role">04 · ADMINISTRATION</div>
+            <h3>행정·사역 관리를 위한 노트북LM</h3>
+            <p>교단 규정, 당회 회의록, 교회 정관을 하나의 노트북에 모아 빠른 검토와 문서 작성에 활용합니다.</p>
+            <ul class="usecase-steps">
+              <li><b>01</b><span><strong>규정 아카이브</strong> — 교단 헌법, 정관, 회의록을 행정 노트북에 통합</span></li>
+              <li><b>02</b><span><strong>빠른 검색</strong> — "장로 선출 절차에 대한 교단 규정을 정리해줘"</span></li>
+              <li><b>03</b><span><strong>문서 초안</strong> — "이번 당회 결의 사항을 공문 형식으로 작성해줘"</span></li>
+              <li><b>04</b><span><strong>일정 기획</strong> — "올해 교회 행사 계획을 바탕으로 월별 일정표를 만들어줘"</span></li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 06 프롬프트 -->
+    <section id="prompts" class="page-section">
+      <div class="section-eyebrow">06 · PROMPTS</div>
+      <h2>'무엇을 물어야 하는가'가<br />결과의 8할입니다.</h2>
+      <p class="lede">
+        설교·점검·소그룹·행정에서 바로 쓸 수 있는 한국어 프롬프트 12개.
+        각각 '초안 생성용'이지, 그대로 출력하기 위한 것이 아닙니다.
+        한 번 받고, 한 번 다듬으세요.
+      </p>
+
+      <div class="prompt-filter">
+        <button class="filter-btn active" data-filter="전체">전체</button>
+        <button class="filter-btn" data-filter="설교">설교</button>
+        <button class="filter-btn" data-filter="점검">점검</button>
+        <button class="filter-btn" data-filter="소그룹">소그룹</button>
+        <button class="filter-btn" data-filter="행정">행정</button>
+      </div>
+
+      <div class="prompt-grid" id="promptGrid"></div>
+    </section>
+
+    <!-- 07 핵심 포인트 -->
+    <section id="tips" class="page-section">
+      <div class="section-eyebrow">07 · PRINCIPLES</div>
+      <h2>여섯 가지 자기 규칙.</h2>
+      <p class="lede">
+        목회자 모임이나 사역팀 안에 노트북LM을 소개할 때 짚어 줄 만한
+        '써도 되는 자세'의 여섯 가지. 도구가 사역을 가리지 않게 하기 위함입니다.
+      </p>
+
+      <div class="principle-list">
+        <div class="principle">
+          <div class="marker">✦</div>
+          <div>
+            <h4>AI는 초안, 설교는 목회자의 것</h4>
+            <p>노트북LM이 생성한 내용은 항상 출발점입니다. 설교의 언어와 적용은 목회자 본인의 신앙 경험과 성도를 향한 기도에서 나와야 합니다. AI 문장을 그대로 강대상으로 옮기지 마세요.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="marker">✦</div>
+          <div>
+            <h4>출처 핀이 없는 답은 인용하지 않는다</h4>
+            <p>노트북LM이 출처 핀 없이 답할 때는 업로드한 자료를 벗어난 추론입니다. 설교·교육에 쓸 내용은 반드시 출처 핀이 달린 답변만 활용하고, 원문을 한 번 더 확인하세요.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="marker">✦</div>
+          <div>
+            <h4>성도 개인 정보를 절대 업로드하지 않는다</h4>
+            <p>상담 일지, 심방 기록, 헌금 자료 등 성도 개인 식별 정보는 노트북LM에 업로드하지 마세요. 익명 처리 후에도 재식별 위험이 있는 민감 정보는 별도 관리 원칙을 지키세요.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="marker">✦</div>
+          <div>
+            <h4>노트북을 목적별로 분리한다</h4>
+            <p>설교 연구 / 교육 커리큘럼 / 교회 행정 / 개인 신학 연구를 각각 별도의 노트북으로 운영하세요. 자료가 섞이면 AI의 응답 정확도가 떨어지고 관리도 어려워집니다.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="marker">✦</div>
+          <div>
+            <h4>결과를 공유 전 반드시 검토한다</h4>
+            <p>AI가 생성한 공과 자료, 행정 문서, FAQ를 성도·팀원과 공유하기 전에 반드시 목회자 본인이 읽고 사실 여부와 신학적 적절성을 확인하세요. 신속함보다 정확함이 먼저입니다.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="marker">✦</div>
+          <div>
+            <h4>도구는 사역의 수단이지 목적이 아니다</h4>
+            <p>노트북LM을 활용해 절약한 시간은 기도와 말씀 묵상, 성도 심방에 쓰세요. AI 도구를 탐구하는 것이 사역의 중심이 되는 순간, 본질이 흐려집니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 FAQ -->
+    <section id="faq" class="page-section">
+      <div class="section-eyebrow">08 · FAQ</div>
+      <h2>8가지의 질문,<br />8가지의 정직한 답.</h2>
+
+      <div class="faq" id="faqList"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div>
+        <h4>맺음</h4>
+        <p class="foot-blessing">
+          "자료를 찾는 시간은 노트북LM에게,<br />
+          목회자는 기도와 말씀과 사람에게."
+        </p>
+      </div>
+      <div>
+        <h4>이 가이드의 구성</h4>
+        <ul>
+          <li><a href="#intro">01 · 노트북LM이란</a></li>
+          <li><a href="#why">02 · 왜 노트북LM인가</a></li>
+          <li><a href="#studio">03 · 스튜디오</a></li>
+          <li><a href="#banana">04 · BananaNL</a></li>
+          <li><a href="#workflow">05 · 사역별 워크플로</a></li>
+          <li><a href="#prompts">06 · 프롬프트 12선</a></li>
+          <li><a href="#tips">07 · 핵심 포인트</a></li>
+          <li><a href="#faq">08 · FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>관련 도구</h4>
+        <ul>
+          <li><a href="https://notebooklm.google.com" target="_blank" rel="noopener">NotebookLM (Google) ↗</a></li>
+          <li><a href="https://chromewebstore.google.com" target="_blank" rel="noopener">Chrome 웹 스토어 ↗</a></li>
+          <li><span style="color:var(--ink-3)">BananaNL — Chrome 확장</span></li>
+        </ul>
+      </div>
+      <div class="foot-bottom">
+        <span>NotebookLM is a product of Google. 본 가이드는 비공식 안내 자료로, 어떠한 상표·UI도 사칭하지 않습니다.</span>
+        <span>CMDSPACE · v2 · 2026</span>
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+/* ── Data ───────────────────────────────────────────────── */
+const PROMPTS = [
+  { cat:"설교", tag:"P-01", title:"본문 핵심 주제 추출", note:"설교 초안 전 가장 먼저 실행하세요.", body:"업로드한 주석 자료들을 바탕으로 [본문]의 핵심 신학적 주제 3가지를 각각 2–3문장으로 정리해줘. 각 주제마다 출처 문서와 페이지를 표시해줘." },
+  { cat:"설교", tag:"P-02", title:"반론·약점 점검", note:"논리 강화 전 실행하세요.", body:"내가 지금 준비하는 설교의 핵심 주장은 [주장 요약]이야. 이 주장에 대해 신학적으로 제기될 수 있는 반론이나 약점을 업로드된 자료 안에서 3가지 찾아줘." },
+  { cat:"설교", tag:"P-03", title:"청중 언어로 재서술", note:"원고 완성 후 마지막에 실행하세요.", body:"다음 설교 본문을 [청중 유형: 40대 직장인 교인]이 쉽게 이해할 수 있는 언어로 다시 써줘. 신학 용어는 가능하면 일상어로 바꾸되 의미는 유지해줘.\n\n[설교 단락 붙여넣기]" },
+  { cat:"점검", tag:"P-04", title:"신학적 일관성 검토", note:"설교 초안 완성 후 실행하세요.", body:"첨부한 설교 원고를 읽고, 신학적으로 일관되지 않거나 업로드된 주석 자료와 충돌하는 부분을 찾아줘. 문단 번호와 함께 알려줘." },
+  { cat:"점검", tag:"P-05", title:"인용 출처 재확인", note:"원고에 인용이 포함된 경우 실행하세요.", body:"설교 원고에 사용된 모든 인용문과 사실 정보를 목록으로 만들고, 업로드된 자료에서 그 출처를 찾아줘. 출처를 찾지 못한 항목은 '미확인'으로 표시해줘." },
+  { cat:"점검", tag:"P-06", title:"적용의 구체성 점검", note:"적용 단락 작성 후 실행하세요.", body:"설교의 적용 부분을 읽고, 너무 추상적이거나 구체적인 행동으로 연결되지 않는 문장을 찾아서 더 실천 가능한 표현으로 고쳐줘." },
+  { cat:"소그룹", tag:"P-07", title:"소그룹 공과 자동 생성", note:"소그룹 준비 전 날 실행하세요.", body:"업로드한 [교재 이름] 3과를 바탕으로 이번 주 소그룹 공과를 만들어줘. 구성: 도입 이야기(3분), 본문 읽기, 핵심 질문 4개, 삶의 적용 1개, 마무리 기도 제목 2개." },
+  { cat:"소그룹", tag:"P-08", title:"토론 심화 질문 세트", note:"활발한 토론이 필요한 모임에 적합합니다.", body:"오늘 소그룹에서 다룰 주제는 [주제]야. 업로드된 자료를 참고해서 참여자들이 자신의 삶과 연결해 30분 이상 대화할 수 있는 토론 질문 5개를 만들어줘. 정답이 없는 열린 질문으로 만들어줘." },
+  { cat:"소그룹", tag:"P-09", title:"초신자용 쉬운 요약", note:"새신자반, 세례 교육에 활용하세요.", body:"업로드된 [교재/설교 자료]의 핵심 내용을 교회에 처음 나온 분도 이해할 수 있게 요약해줘. 신학 용어는 모두 풀어쓰고, 길이는 A4 1페이지 이내로 해줘." },
+  { cat:"행정", tag:"P-10", title:"당회 결의 공문 초안", note:"서식 확인 후 사용하세요.", body:"다음 당회 결의 사항을 공문 형식으로 작성해줘. 수신: [수신처], 발신: [교회명], 제목: [제목], 본문에는 결의 내용과 시행일을 포함해줘.\n\n[결의 사항 요약 붙여넣기]" },
+  { cat:"행정", tag:"P-11", title:"교단 규정 빠른 검색", note:"교단 헌법이 업로드된 노트북에서 실행하세요.", body:"교단 헌법과 정관을 참고해서 [장로 선출 / 담임목사 청빙 / 재직회 구성] 절차를 단계별로 정리해줘. 각 단계마다 근거 조항도 함께 표시해줘." },
+  { cat:"행정", tag:"P-12", title:"연간 사역 일정표", note:"연초 사역 계획 시 실행하세요.", body:"업로드한 교회 사역 계획서를 바탕으로 1월부터 12월까지 월별 주요 사역 일정을 표로 정리해줘. 각 항목에는 담당 부서와 예상 참여 인원도 포함해줘." },
+];
+
+const FAQS = [
+  { q:"노트북LM은 유료인가요?", a:"기본 기능은 Google 계정만 있으면 무료로 사용할 수 있습니다. 노트북 수, 업로드 용량, 오디오 생성 횟수 등에서 일부 제한이 있으며, Google One 구독(월정액)을 통해 확장 가능합니다. 사역에서 처음 활용하실 때는 무료 플랜으로 충분합니다." },
+  { q:"한국어로도 잘 작동하나요?", a:"네, 한국어 자료 업로드와 한국어 질문 모두 잘 지원됩니다. 오디오 개요(Audio Overview)도 한국어 설정 시 한국어로 생성됩니다. 다만 구어체 녹취록이나 오래된 신학 자료는 인식률이 낮을 수 있으니 가능하면 텍스트 파일(PDF, DOCX)로 변환 후 업로드하세요." },
+  { q:"성도 개인 정보를 업로드해도 되나요?", a:"권장하지 않습니다. 상담 일지, 헌금 자료, 심방 기록 등 개인 식별 정보가 포함된 자료는 업로드하지 마세요. Google의 데이터 처리 정책에 따라 데이터가 Google 서버에 저장되므로, 민감한 정보는 별도의 보안 도구를 사용해 관리하시기 바랍니다." },
+  { q:"할루시네이션(거짓 답변)이 없나요?", a:"'없다'고 단정하기 어렵습니다. '훨씬 적다'가 정직한 표현입니다. 노트북LM은 업로드된 자료에서만 답하도록 설계되어 있어 일반 AI보다 할루시네이션이 적습니다. 그러나 출처 핀이 없는 답변은 추론이 포함된 것입니다. 설교·교육에 사용할 내용은 항상 원문을 확인하세요." },
+  { q:"한 노트북에 얼마나 많은 자료를 넣을 수 있나요?", a:"무료 플랜 기준으로 노트북 1개당 약 2,500만 자(토큰 기준 약 200만 토큰)의 자료를 넣을 수 있습니다. 200–300페이지 분량의 책 20–30권 정도에 해당합니다. 자료가 많을수록 더 정확하고 풍부한 답을 받을 수 있지만, 주제가 다른 자료는 별도 노트북으로 분리하는 것이 더 효율적입니다." },
+  { q:"기존 ChatGPT나 Claude와 함께 써도 되나요?", a:"네, 상호 보완적으로 활용하시기를 권장합니다. 노트북LM은 '내 자료 기반 연구'에, ChatGPT나 Claude는 '일반 지식 기반 창작·편집·번역'에 적합합니다. 예를 들어, 노트북LM으로 설교 초안 구조를 잡은 후 Claude로 문장을 다듬는 방식의 조합이 효과적입니다." },
+  { q:"설교를 AI가 대신 쓰는 것은 아닌가요?", a:"노트북LM은 연구 보조 도구입니다. 자료를 읽고 정리하고 질문에 답하지만, 설교의 방향 설정, 본문 묵상, 청중을 향한 적용, 기도를 통한 준비는 목회자 본인의 사역입니다. AI는 연구원이고, 설교자는 여전히 목회자 본인입니다. AI를 쓴다는 사실이 설교의 진정성을 약화시키지 않습니다." },
+  { q:"교단이나 교회에서 AI 사용을 금지할 수도 있나요?", a:"교단이나 교회마다 디지털 도구 사용에 대한 입장이 다를 수 있습니다. 특히 사역 자료 관리에서의 데이터 보안 정책을 확인하세요. 현재 대부분의 교단은 AI 활용 자체를 금지하지 않으나, 성도 정보 관리와 외부 클라우드 사용에 관한 규정이 있을 수 있습니다. 소속 교단 가이드라인을 먼저 확인하시기 바랍니다." },
+];
+
+/* ── Prompt Rendering ───────────────────────────────────── */
+function renderPrompts(filter) {
+  const grid = document.getElementById("promptGrid");
+  const list = filter === "전체" ? PROMPTS : PROMPTS.filter(p => p.cat === filter);
+  grid.innerHTML = list.map((p, i) => `
+    <article class="prompt-card">
+      <div class="prompt-head"><span class="prompt-tag">${p.cat} · ${p.tag}</span></div>
+      <div class="prompt-title">${p.title}</div>
+      <div class="prompt-body">${escHtml(p.body)}</div>
+      <div class="prompt-foot">
+        <span class="prompt-note">${p.note}</span>
+        <button class="copy-btn" onclick="copyPrompt(this, ${PROMPTS.indexOf(p)})">복사</button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function copyPrompt(btn, idx) {
+  navigator.clipboard.writeText(PROMPTS[idx].body).catch(() => {});
+  btn.textContent = "복사됨";
+  btn.classList.add("copied");
+  setTimeout(() => { btn.textContent = "복사"; btn.classList.remove("copied"); }, 1500);
+}
+
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderPrompts(btn.dataset.filter);
+  });
+});
+
+renderPrompts("전체");
+
+/* ── FAQ Rendering ──────────────────────────────────────── */
+const faqList = document.getElementById("faqList");
+faqList.innerHTML = FAQS.map((f, i) => `
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>${f.q}</span>
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-a">${f.a}</div>
+  </div>
+`).join("");
+
+function toggleFaq(btn) {
+  const item = btn.closest(".faq-item");
+  const isOpen = item.classList.contains("open");
+  document.querySelectorAll(".faq-item.open").forEach(el => el.classList.remove("open"));
+  if (!isOpen) item.classList.add("open");
+}
+
+/* ── Studio Tabs ────────────────────────────────────────── */
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-body").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+  });
+});
+
+/* ── Scroll Spy ─────────────────────────────────────────── */
+const sections = ["intro","why","studio","banana","workflow","prompts","tips","faq"];
+const navLinks = document.querySelectorAll(".sidebar-nav a");
+
+function updateActive() {
+  const fold = window.innerHeight * 0.35;
+  let cur = sections[0];
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (el.getBoundingClientRect().top - fold < 0) cur = id;
+  }
+  navLinks.forEach(a => {
+    a.classList.toggle("active", a.getAttribute("href") === "#" + cur);
+  });
+}
+
+window.addEventListener("scroll", updateActive, { passive: true });
+updateActive();
+
+/* ── Theme Toggle ───────────────────────────────────────── */
+const root = document.documentElement;
+const themeBtn = document.getElementById("themeBtn");
+const themeIcon = document.getElementById("themeIcon");
+const themeLabel = document.getElementById("themeLabel");
+
+function applyTheme(t) {
+  root.setAttribute("data-theme", t);
+  themeIcon.textContent = t === "dark" ? "○" : "◐";
+  themeLabel.textContent = t === "dark" ? "라이트 모드" : "다크 모드";
+  try { localStorage.setItem("cmds-theme", t); } catch(e) {}
+}
+
+try {
+  const saved = localStorage.getItem("cmds-theme");
+  if (saved) applyTheme(saved);
+} catch(e) {}
+
+themeBtn.addEventListener("click", () => {
+  applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+});
+
+/* ── Mobile Menu ────────────────────────────────────────── */
+const sidebar = document.getElementById("sidebar");
+document.getElementById("menuBtn").addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+});
+document.addEventListener("click", e => {
+  if (!sidebar.contains(e.target) && e.target.id !== "menuBtn") {
+    sidebar.classList.remove("open");
+  }
+});
+</script>
 </body>
 </html>
